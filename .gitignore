@@ -4,3 +4,13 @@ Library/
 .vscode/
 
 UserSettings/
+
+Assembly-CSharp.csproj
+
+Assembly-CSharp-Editor.csproj
+
+DeadMan.sln
+
+Logs/
+
+obj/

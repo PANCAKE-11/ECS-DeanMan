@@ -44,6 +44,10 @@ public Transform ShootPoint;
        
        Rotate();
        AttackAnim();
+       if(Input.GetKeyDown(KeyCode.Escape))
+       {
+           UIManager.Instance.EscKeyDown();
+       }
    }
 private void FixedUpdate() {
         Move();
