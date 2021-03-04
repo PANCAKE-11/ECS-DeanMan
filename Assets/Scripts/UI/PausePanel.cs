@@ -12,7 +12,7 @@ public class PausePanel : MonoBehaviour
     public Button exitBtn;
 
     public Button mainMenuBtn;
-
+    public  SceneName nextScene;
 
     private void OnEnable()
     {
@@ -23,18 +23,31 @@ public class PausePanel : MonoBehaviour
         exitBtn.onClick.AddListener(ExitBtnDown);
         mainMenuBtn.onClick.AddListener(mainMenuBtnDown);
     }
+    private void OnDisable()
+    {
+        resumeBtn.onClick.RemoveAllListeners();
+        settingBtn.onClick.RemoveAllListeners();
+        exitBtn.onClick.RemoveAllListeners();
+        mainMenuBtn.onClick.RemoveAllListeners();
+
+    }
+     void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+                UIManager.Instance.PopOutPanels();
+        }
+    }
     private void SettingBtnDown()
     {
-        UIManager.Instance.PushInPanels(UIManager.Instance.SettingsPanel);
+        UIManager.Instance.PushInPanels(UIManager.Instance._settingsPanel);
     }
     public void Pause()
     {
-        Time.timeScale = 0;
         System.GC.Collect();
     }
     public void ResumeBtnDown()
     {
-        Time.timeScale = 1;
         UIManager.Instance.PopOutPanels();
     }
     public void ExitBtnDown()
@@ -45,17 +58,12 @@ public class PausePanel : MonoBehaviour
         Application.Quit();
     #endif
     }
-    //todo 返回主菜单按钮
     public void mainMenuBtnDown()
     {
+        LevelManager.Instance.StartSwitchScene(nextScene.ToString(),new Vector3(1000,1000,1000));
+        PlayerController.Instance.gameObject.SetActive(false);
         
     }
-    private void OnDisable()
-    {
-        resumeBtn.onClick.RemoveAllListeners();
-        settingBtn.onClick.RemoveAllListeners();
-        exitBtn.onClick.RemoveAllListeners();
-        mainMenuBtn.onClick.RemoveAllListeners();
-    }
+   
 
 }
