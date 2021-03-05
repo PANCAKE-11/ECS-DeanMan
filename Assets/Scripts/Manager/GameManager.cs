@@ -16,6 +16,7 @@ public class GameManager : Singleton<GameManager>
     {
         EventHandler.BeforeSceneUnloadFadeOutEvent += DestoryPlayer;
         EventHandler.AfterSceneLoadFadeInEvent += SpawnPlayer;
+        Application.targetFrameRate=60;
     }
 
     private void OnDisable()
