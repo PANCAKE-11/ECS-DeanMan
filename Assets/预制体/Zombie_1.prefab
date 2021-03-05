@@ -1971,6 +1971,7 @@ GameObject:
   - component: {fileID: 4547069783584090824}
   - component: {fileID: 5343291221761025740}
   - component: {fileID: 681471733}
+  - component: {fileID: 3406314970956307235}
   m_Layer: 0
   m_Name: Zombie_1
   m_TagString: Enemy
@@ -1987,7 +1988,7 @@ Transform:
   m_GameObject: {fileID: 2784867163835736030}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.72, y: 0.72, z: 0.72}
   m_Children:
   - {fileID: 2784867163835696124}
   - {fileID: 2784867163835696010}
@@ -2040,8 +2041,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 3.756809, z: 1.8010182}
-  m_Center: {x: 0, y: 1.7856337, z: 0.6998025}
+  m_Size: {x: 1, y: 3.756809, z: 1.6459998}
+  m_Center: {x: 0, y: 1.7856339, z: 0.62229335}
 --- !u!65 &4547069783584090824
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2067,10 +2068,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1010bebfce89fdc48a496def10c0c98f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  beginState: 3
+  beginState: 2
   _health: 0
   player: {fileID: 0}
-  outCollider: {fileID: 0}
+  outCollider: {fileID: 4547069783584090824}
+  inCollider: {fileID: 5343291221761025741}
 --- !u!195 &681471733
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2081,7 +2083,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.41
-  m_Speed: 3.5
+  m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -2093,3 +2095,17 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 3
+--- !u!136 &3406314970956307235
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2784867163835736030}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.98
+  m_Height: 3.89
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.78, z: 0}

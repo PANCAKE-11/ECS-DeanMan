@@ -6,7 +6,7 @@ using UnityEngine;
 public class LevelManager : Singleton<LevelManager>
 {
     private bool isFading=false;
-    [SerializeField] private float fadeDuration = 1f;
+    [SerializeField] private float _fadeDuration = 1f;
     [SerializeField] private CanvasGroup faderCanvasGroup = null;
 
     public SceneName startingSceneName;
@@ -15,7 +15,7 @@ public class LevelManager : Singleton<LevelManager>
     {
         StartCoroutine(Fade(0));
     }
-    private IEnumerator Fade(float finalAlpha)
+    private IEnumerator Fade(float finalAlpha ,float fadeDuration=1)
     {
         isFading = true;
 
@@ -64,10 +64,10 @@ public class LevelManager : Singleton<LevelManager>
 
         //TODO SaveManager 恢复场景数据
 
-        yield return StartCoroutine(Fade(0f));
-
         // Call after scene load fade in event
         EventHandler.CallAfterSceneLoadFadeInEvent();
+
+        yield return StartCoroutine(Fade(0f));
 
          UIManager.Instance.ClearPanels();
 

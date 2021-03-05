@@ -88,15 +88,32 @@ public class PlayerController : Singleton<PlayerController>
     private void Move()
     {
 
-        if (Input.GetAxis("Vertical") > 0)
+        Vector2 moveDir=new Vector2(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical"));
+        if (moveDir.y > 0)
         {
-            _characterController.SimpleMove(_speed * Input.GetAxis("Vertical") * transform.forward);
+            _characterController.SimpleMove(_speed * moveDir.y* transform.forward);
+
         }
-        else if (Input.GetAxis("Vertical") < 0)
+        else if (moveDir.y < 0)
         {
-            _characterController.SimpleMove(_speed * 0.5f * Input.GetAxis("Vertical") * transform.forward);
+            _characterController.SimpleMove(_speed * 0.5f *moveDir.y * transform.forward);
+
         }
-        _animator.SetFloat("Speed", Input.GetAxis("Vertical"));
+        _animator.SetFloat("Speed", moveDir.y);
+
+    //   else if (moveDir.x > 0)
+    //     {
+    //         _characterController.SimpleMove(_speed *0.5f* moveDir.x* transform.right);
+    //     _animator.SetFloat("Speed",-Mathf.Abs( moveDir.x));
+
+    //     }
+    //     else if (moveDir.x < 0)
+    //     {
+    //         _characterController.SimpleMove(_speed * 0.5f *moveDir.x * transform.right);
+    //     _animator.SetFloat("Speed",-Mathf.Abs( moveDir.x));
+
+    //     }
+        
 
     }
     private void Rotate()

@@ -38,13 +38,14 @@ public class Enemy : MonoBehaviour
     [SerializeField] BoxCollider inCollider;
 
 
-
+    private Animator _Anim;
     private void Start()
     {
         _nowState = GetState(beginState);
-        player = GameObject.FindGameObjectWithTag("Player").transform;
 
         _navMashAgent = GetComponent<NavMeshAgent>();
+
+        _Anim=GetComponent<Animator>();
         Switch2OutCollider();
 
     }
@@ -52,23 +53,35 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         _nowState.Excute();
+       
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player") && outCollider.enabled == false
         && inCollider.enabled == true)
-            _nowState = _attackState;
+           { _nowState = _attackState;
+             _Anim.SetBool("Attack",true);
+             }
         else if (other.gameObject.CompareTag("Player") && outCollider.enabled == true
       && inCollider.enabled == false)//触发丧尸发现玩家 开始chase
-        { _nowState = _chaseState; Switch2InCollider(); }
+        { _nowState = _chaseState;
+             Switch2InCollider(); 
+             _Anim.SetBool("Walk",true);
+            player = other.transform;
+
+
+        }
     }
 
 
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
-            _nowState = _chaseState;
+       {     _nowState = _chaseState;
+             _Anim.SetBool("Attack",false);
+            
+       }
 
     }
 
@@ -107,7 +120,9 @@ public class Enemy : MonoBehaviour
     //TODO 角色死亡
     public void Die()
     {
-        Debug.Log("已死亡");
+        _navMashAgent.enabled=false;
+        _Anim.SetTrigger("Die");
+        Destroy(this);
     }
 
     public bool IsDie(float damage)
@@ -124,13 +139,17 @@ public class Enemy : MonoBehaviour
     }
     public void ChaseTraget()
     {
-        _navMashAgent.destination = player.transform.position;
-        _navMashAgent.isStopped = false;
+        if(player!=null)
+       { _navMashAgent.destination = player.transform.position;
+        _navMashAgent.isStopped = false;}
     }
 
-    public void Attack()
+    public void ToAttack()
     {
         _navMashAgent.isStopped = true;
     }
-
+    public void Attack()
+    {
+        print("ATTACK!!!");
+    }
 }

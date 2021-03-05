@@ -63,6 +63,6 @@ public class AttackState : IEnemyAIState
 
     public void Excute()
     {
-      _enemy.Attack();
+      _enemy.ToAttack();
     }
 }

@@ -13,3 +13,5 @@ DeadMan.sln
 Logs/
 
 obj/
+
+.vs/
