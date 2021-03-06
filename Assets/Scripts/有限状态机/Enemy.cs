@@ -22,6 +22,7 @@ public class Enemy : MonoBehaviour
         _patrolState = new PatrolState(this);
 
     }
+
     private IEnemyAIState _nowState = null;
     [SerializeField] private EnemyAIState_Enum beginState;
     [SerializeField] private float _health;
@@ -30,12 +31,18 @@ public class Enemy : MonoBehaviour
         get { return _health; }
         set { Health = value; }
     }
-    //GamePlay参数
-    public Transform player;
     private NavMeshAgent _navMashAgent;
+    //GamePlay参数
+   [HideInInspector] public Transform player;
+   private bool playerCanbeHit;
+   [Header("属性")]
+    [SerializeField]private int damage;
 
-    [SerializeField] BoxCollider outCollider;
-    [SerializeField] BoxCollider inCollider;
+
+    [Header("丧尸视野"),SerializeField,TooltipAttribute("会根据ViewRadius自动调整")]
+     FieldOfView outViewFied;
+    [SerializeField,TooltipAttribute("会根据ViewRadius自动调整")]
+    FieldOfView inViewFied;
 
 
     private Animator _Anim;
@@ -46,44 +53,60 @@ public class Enemy : MonoBehaviour
         _navMashAgent = GetComponent<NavMeshAgent>();
 
         _Anim=GetComponent<Animator>();
-        Switch2OutCollider();
+        Switch2OutView();
+
+        if (inViewFied.viewRadius>outViewFied.viewRadius)
+        {
+            FieldOfView temp=inViewFied;
+            inViewFied=outViewFied;
+            outViewFied=temp;
+        }
 
     }
 
     private void Update()
     {
         _nowState.Excute();
+        
+            Discovery();
        
+            InToAttack();
+        
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void Discovery()
     {
-        if (other.gameObject.CompareTag("Player") && outCollider.enabled == false
-        && inCollider.enabled == true)
-           { _nowState = _attackState;
-             _Anim.SetBool("Attack",true);
-             }
-        else if (other.gameObject.CompareTag("Player") && outCollider.enabled == true
-      && inCollider.enabled == false)//触发丧尸发现玩家 开始chase
-        { _nowState = _chaseState;
-             Switch2InCollider(); 
+        if (outViewFied.enabled==true&&outViewFied.visibleTargets.Count>0)
+        {
+            _nowState = _chaseState;
              _Anim.SetBool("Walk",true);
-            player = other.transform;
+            player = outViewFied.visibleTargets[0];      
+            Switch2InView(); 
+            //notDiscovered=false;
+        }
+    }
 
+    public void InToAttack()
+    {
+        if(inViewFied.enabled==true){
+        if (inViewFied.visibleTargets.Count>0)
+        {
+            _nowState = _attackState;
+             _Anim.SetBool("Attack",true);
+            player = inViewFied.visibleTargets[0];      
+            playerCanbeHit=true; 
+        }else 
+        {
+            _nowState = _chaseState;
+             _Anim.SetBool("Attack",false);
+            playerCanbeHit=false; 
+
+        }
 
         }
     }
 
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-       {     _nowState = _chaseState;
-             _Anim.SetBool("Attack",false);
-            
-       }
-
-    }
+   
 
 
 
@@ -104,17 +127,17 @@ public class Enemy : MonoBehaviour
     }
 
 
-    public void Switch2OutCollider()
+    public void Switch2OutView()
     {
-        inCollider.enabled = false;
+        inViewFied.enabled = false;
 
-        outCollider.enabled = true;
+        outViewFied.enabled = true;
     }
 
-    public void Switch2InCollider()
+    public void Switch2InView()
     {
-        outCollider.enabled = false;
-        inCollider.enabled = true;
+        outViewFied.enabled = false;
+        inViewFied.enabled = true;
     }
 
     //TODO 角色死亡
@@ -150,6 +173,25 @@ public class Enemy : MonoBehaviour
     }
     public void Attack()
     {
-        print("ATTACK!!!");
+        if (playerCanbeHit)
+        {
+            PlayerController.Instance.TakeDamage(damage);
+        }
+
+    }
+
+
+    public void PlayerDie()
+    {
+        _Anim.SetBool("Walk",false);
+        Destroy(this);
+    }
+    private void OnEnable() {
+        EventHandler.PlayerDieEvent+=PlayerDie;
+    }
+
+    private void OnDisable() {
+        EventHandler.PlayerDieEvent-=PlayerDie;
+        
     }
 }

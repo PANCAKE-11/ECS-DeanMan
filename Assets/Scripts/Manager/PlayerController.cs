@@ -18,7 +18,6 @@ public class PlayerController : Singleton<PlayerController>
     }
     private Vector3 _mousePos;
     private Camera _camera;
-    [SerializeField] private float _speed;
     public float Speed
     {
         get
@@ -26,11 +25,18 @@ public class PlayerController : Singleton<PlayerController>
             return _speed;
         }
     }
+
+    private bool _death=false;
     /// <summary>
     /// 射击
     /// </summary>
     private IWeapon _weapon;
+
+    [Header("玩家属性")]
     [SerializeField] private float _shootCD;
+    [SerializeField] private float _speed;
+
+    [SerializeField] private int _health;
     private bool _aim;
 
     public Transform ShootPoint;
@@ -38,16 +44,18 @@ public class PlayerController : Singleton<PlayerController>
     /// 动画
     /// </summary>
     Animator _animator;
+
+
     private void Start()
     {
         _camera = Camera.main;
         _weapon = transform.GetComponentInChildren<IWeapon>();
         _animator = GetComponent<Animator>();
-        Application.targetFrameRate = 60;
     }
     private void Update()
     {
-        if (Time.timeScale == 1)
+        if(!_death)
+      {  if (Time.timeScale == 1)
         {
             Rotate();
             AttackAnim();
@@ -61,10 +69,12 @@ public class PlayerController : Singleton<PlayerController>
         if (Input.GetKeyDown(KeyCode.Escape))
         {
                 UIManager.Instance.EscKeyDown();
-        }
+                GameManager.Instance.SetNormalCursor();
+        }}
     }
     private void FixedUpdate()
     {
+        if(!_death)
         Move();
     }
     private void AttackAnim()
@@ -72,6 +82,11 @@ public class PlayerController : Singleton<PlayerController>
         if (Input.GetMouseButtonDown(1))
         {
             _aim = !_aim;
+            if(_aim)
+                GameManager.Instance.SetAimCursor();
+            else{
+                GameManager.Instance.SetNormalCursor();
+            }
             _animator.SetBool("Aim", _aim);
         }
         if (Input.GetMouseButtonDown(0) && _shootCD <= 0 && _aim)
@@ -143,5 +158,16 @@ public class PlayerController : Singleton<PlayerController>
 
         _weapon.fire();
 
+    }
+//TODO 玩家受到伤害
+    public void TakeDamage(int Damage)
+    {
+        _health-=Damage;
+            if(_health<=0)
+            {
+               _animator.SetTrigger("Die");
+               EventHandler.CallPlayerDieEvent();
+                _death=true;
+            }
     }
 }

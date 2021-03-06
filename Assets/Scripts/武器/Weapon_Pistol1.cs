@@ -20,10 +20,9 @@ public class Weapon_Pistol1 : MonoBehaviour, IWeapon
     {
         fireVFX.Play();
         RaycastHit ray;
-      if ( Physics.Raycast(_shootPoint.position,_shootPoint.forward,out ray,1000)&&ray.collider.GetType( ).Name=="CapsuleCollider")
+      if ( Physics.Raycast(_shootPoint.position,_shootPoint.forward,out ray,1000))
         { 
-         GameObject.Instantiate(hitVFX,ray.point,Quaternion.identity);
-         print(ray.collider.GetType( ).Name);
+         GameObject.Instantiate(hitVFX,ray.point,Quaternion.identity).transform.SetParent(ray.transform);
          }
     }
 

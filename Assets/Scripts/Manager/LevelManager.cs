@@ -6,10 +6,7 @@ using UnityEngine;
 public class LevelManager : Singleton<LevelManager>
 {
     private bool isFading=false;
-    [SerializeField] private float _fadeDuration = 1f;
     [SerializeField] private CanvasGroup faderCanvasGroup = null;
-
-    public SceneName startingSceneName;
 
     private void Start()
     {

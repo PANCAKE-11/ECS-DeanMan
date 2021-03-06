@@ -39,6 +39,14 @@ public static class EventHandler
         if(AfterSceneLoadFadeInEvent!=null)
             AfterSceneLoadFadeInEvent();
     }
+
+    public static event Action PlayerDieEvent;
+
+    public static void CallPlayerDieEvent()
+    {
+        if(PlayerDieEvent!=null)
+            PlayerDieEvent();
+    }
 }
 
 

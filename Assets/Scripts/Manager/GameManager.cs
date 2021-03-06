@@ -12,11 +12,14 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private So_PlayerProperties properties;
     private GameObject player;
     private GameObject cameras;
+
+    
+    public Texture2D normalCursor;
+    public Texture2D AimCursor;
     private void OnEnable()
     {
         EventHandler.BeforeSceneUnloadFadeOutEvent += DestoryPlayer;
         EventHandler.AfterSceneLoadFadeInEvent += SpawnPlayer;
-        Application.targetFrameRate=60;
     }
 
     private void OnDisable()
@@ -36,7 +39,10 @@ public class GameManager : Singleton<GameManager>
         _virtualCamera.Follow = player.transform;
         _virtualCamera.LookAt = player.transform;
     }
-
+    private void Start() {
+        Cursor.SetCursor(normalCursor,Vector2.zero,CursorMode.Auto);
+        SpawnPlayer();
+    }
 
     public void DestoryPlayer()
     {
@@ -47,5 +53,18 @@ public class GameManager : Singleton<GameManager>
             Destroy(player);
             Destroy(cameras);
         }
+    }
+
+    public void SetNormalCursor()
+    {
+        Cursor.SetCursor(normalCursor,Vector2.zero,CursorMode.Auto);
+
+    }
+
+    
+    public void SetAimCursor()
+    {
+        Cursor.SetCursor(AimCursor,Vector2.zero,CursorMode.Auto);
+
     }
 }

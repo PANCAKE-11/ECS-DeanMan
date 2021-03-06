@@ -47,7 +47,7 @@ public class IdleState : IEnemyAIState
 
     public void Excute()
     {
-        //throw new System.NotImplementedException();
+        
     }
 }
 ///攻击状态
@@ -63,6 +63,7 @@ public class AttackState : IEnemyAIState
 
     public void Excute()
     {
+
       _enemy.ToAttack();
     }
 }
