@@ -583,6 +583,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: SaveLoadManager
       objectReference: {fileID: 0}
+    - target: {fileID: 6800771092787348649, guid: 25484a6424c9e6840b7f0051dbfd5044, type: 3}
+      propertyPath: _playerPrefab
+      value: 
+      objectReference: {fileID: 7051586070134972477, guid: 43cbb7edc740212448e6881240c084c9, type: 3}
+    - target: {fileID: 6800771092787348649, guid: 25484a6424c9e6840b7f0051dbfd5044, type: 3}
+      propertyPath: _camerasPrefab
+      value: 
+      objectReference: {fileID: 3145598657070662396, guid: b5b88bb910f132844a323a0d3b5504dd, type: 3}
+    - target: {fileID: 6800771092787348649, guid: 25484a6424c9e6840b7f0051dbfd5044, type: 3}
+      propertyPath: playerProperties
+      value: 
+      objectReference: {fileID: 11400000, guid: 6a4347c907205c1498140cbf65214309, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25484a6424c9e6840b7f0051dbfd5044, type: 3}
 --- !u!1001 &1764475358694601463

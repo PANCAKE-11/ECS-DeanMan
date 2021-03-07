@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.IO;
 using System.Text;
-
+using Cinemachine;
 
 public class SaveLoadManager :Singleton<SaveLoadManager>
 {
@@ -10,6 +10,13 @@ public class SaveLoadManager :Singleton<SaveLoadManager>
 
     [SerializeField] GameObject enemyPrefab;
 
+    private GameObject player;
+    private GameObject cameras;
+    [SerializeField] private So_PlayerProperties playerProperties;
+
+
+    [SerializeField] private GameObject _playerPrefab;
+    [SerializeField] private GameObject _camerasPrefab;
 
   
 private void Update() {
@@ -18,22 +25,11 @@ private void Update() {
         Save();
     }else if(Input.GetKeyDown(KeyCode.L))
     {
-        Load();
+         Load();
     }
-
 }
  
 
-
- private void OnEnable() {
-     EventHandler.AfterSceneLoadFadeInEvent+=Load;
-
- }
-
-  void OnDisable() {
-     EventHandler.AfterSceneLoadFadeInEvent-=Load;
-     
- }
     public void Save()
     {
 
@@ -54,17 +50,19 @@ private void Update() {
             { saveDate.EnemyDeadFlag.Add(true);
              saveDate.EnemyHealth.Add(-1);}
 
-
-    
         }
        FileStream save= File.Create(_saveFilePath+_saveFileName);
        AddText(save,JsonUtility.ToJson(saveDate));
-       
+
       save.Close();
+
+    if (player != null && cameras != null)
+        {
+            playerProperties.position = player.transform.position;
+            playerProperties.roatition = player.transform.rotation;
+            playerProperties.HealthValue=PlayerController.Instance.Healeth;
+        }
     }
-
-
-
 
     public void Load()
     {
@@ -83,13 +81,33 @@ private void Update() {
       }}
       save.Close();
 
+      SpawnPlayerAndCarmera();
+
     }
-
-
+   public void SpawnPlayerAndCarmera()
+    {
+        if(!player&&!cameras)
+        {player = GameObject.Instantiate(_playerPrefab, playerProperties.position, playerProperties.roatition);
+        cameras = GameObject.Instantiate(_camerasPrefab, Vector3.one, Quaternion.identity);
+        cameras.transform.SetParent(transform);
+         CinemachineVirtualCamera _virtualCamera = cameras.transform.GetComponentInChildren<CinemachineVirtualCamera>();
+        _virtualCamera.Follow = player.transform;
+        _virtualCamera.LookAt = player.transform;}
+        else{
+            player.SetActive(true);
+            cameras.SetActive(true);
+            player.transform.position=playerProperties.position;
+            player.transform.rotation=playerProperties.roatition;
+        }
+       PlayerController.Instance.Healeth=playerProperties.HealthValue;
+    }
     public void ClearSave()
     {
         FileStream save= File.Create(_saveFilePath+_saveFileName);
         save.Close();
+          playerProperties.position = Vector3.zero;
+            playerProperties.roatition = Quaternion.identity;
+
     }
      private  void AddText(FileStream fs, string value)
     {

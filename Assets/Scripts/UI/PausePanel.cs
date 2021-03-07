@@ -60,7 +60,7 @@ public class PausePanel : MonoBehaviour
     }
     public void mainMenuBtnDown()
     {
-        LevelManager.Instance.StartSwitchScene(nextScene.ToString(),new Vector3(1000,1000,1000));
+        LevelManager.Instance.StartSwitchScene(nextScene.ToString());
         PlayerController.Instance.gameObject.SetActive(false);
         
     }

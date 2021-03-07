@@ -16,7 +16,7 @@ public class MainMenuPanel : MonoBehaviour
     private void OnEnable()
     {
         startBtn.onClick.AddListener(startNewGame);
-        continueBtn.onClick.AddListener(StartAContinueBtnDown);
+        continueBtn.onClick.AddListener(ContinueBtnDown);
         settingBth.onClick.AddListener(SettingBtnDown);
         exitBtn.onClick.AddListener(ExitBtnDown);
 
@@ -34,10 +34,11 @@ private void Start() {
     #endif
     }
 
-    public void StartAContinueBtnDown()
+    public void ContinueBtnDown()
     {
         //TODO Savemanager 根据存档加载不同场景
-        LevelManager.Instance.StartSwitchScene(nextScene.ToString(),spawnPos);
+        LevelManager.Instance.StartSwitchScene(nextScene.ToString());
+
     }
 
     public void SettingBtnDown()
@@ -50,7 +51,7 @@ private void Start() {
     {
         SaveLoadManager.Instance.ClearSave();
         
-        LevelManager.Instance.StartSwitchScene(nextScene.ToString(),spawnPos);
+        LevelManager.Instance.StartSwitchScene(nextScene.ToString());
 
     }
 
@@ -67,4 +68,6 @@ private void Start() {
         exitBtn.onClick.RemoveAllListeners();
 
     }
+
+
 }

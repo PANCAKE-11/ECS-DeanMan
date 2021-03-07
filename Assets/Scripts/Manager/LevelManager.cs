@@ -33,7 +33,7 @@ public class LevelManager : Singleton<LevelManager>
         faderCanvasGroup.blocksRaycasts = false;
     }
 
-    private IEnumerator FadeAndSwitchScenes(string sceneName, Vector3 spawnPosition)
+    private IEnumerator FadeAndSwitchScenes(string sceneName)
     {
        
         // Call before scene unload fade out event
@@ -63,7 +63,10 @@ public class LevelManager : Singleton<LevelManager>
 
         // Call after scene load fade in event
         EventHandler.CallAfterSceneLoadFadeInEvent();
-
+        if(sceneName!="MainMenu")
+        { 
+            SaveLoadManager.Instance.Load();
+        }   
         yield return StartCoroutine(Fade(0f));
 
          UIManager.Instance.ClearPanels();
@@ -82,10 +85,10 @@ public class LevelManager : Singleton<LevelManager>
         // Set the newly loaded scene as the active scene (this marks it as the one to be unloaded next).
         SceneManager.SetActiveScene(newlyLoadedScene);
     }
-    public void StartSwitchScene(string sceneName, Vector3 spawnPosition)
+    public void StartSwitchScene(string sceneName)
     {
         if(!isFading)
-        StartCoroutine(FadeAndSwitchScenes( sceneName,  spawnPosition));
+        StartCoroutine(FadeAndSwitchScenes( sceneName));
     }
 
 }
