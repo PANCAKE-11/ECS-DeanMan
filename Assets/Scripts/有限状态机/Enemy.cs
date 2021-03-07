@@ -139,8 +139,7 @@ public class Enemy : MonoBehaviour
         outViewFied.enabled = false;
         inViewFied.enabled = true;
     }
-
-    //TODO 角色死亡
+    
     public void Die()
     {
         _navMashAgent.enabled=false;
@@ -148,16 +147,12 @@ public class Enemy : MonoBehaviour
         Destroy(this);
     }
 
-    public bool IsDie(float damage)
+    public void TakeDamage(float damage)
     {
         _health -= damage;
         if (_health <= 0)
         {
-            return true;
-        }
-        else
-        {
-            return false;
+            Die();
         }
     }
     public void ChaseTraget()

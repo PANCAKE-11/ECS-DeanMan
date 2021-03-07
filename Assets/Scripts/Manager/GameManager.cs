@@ -13,13 +13,14 @@ public class GameManager : Singleton<GameManager>
     private GameObject player;
     private GameObject cameras;
 
-    
+    public bool StartMenu;
     public Texture2D normalCursor;
     public Texture2D AimCursor;
     private void OnEnable()
     {
         EventHandler.BeforeSceneUnloadFadeOutEvent += DestoryPlayer;
         EventHandler.AfterSceneLoadFadeInEvent += SpawnPlayer;
+        StartMenu=true;
     }
 
     private void OnDisable()
@@ -67,4 +68,6 @@ public class GameManager : Singleton<GameManager>
         Cursor.SetCursor(AimCursor,Vector2.zero,CursorMode.Auto);
 
     }
+
+   
 }

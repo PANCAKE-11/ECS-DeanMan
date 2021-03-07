@@ -18,12 +18,14 @@ public class PlayerController : Singleton<PlayerController>
     }
     private Vector3 _mousePos;
     private Camera _camera;
-    public float Speed
+    public int Speed
     {
         get
         {
             return _speed;
         }
+
+        
     }
 
     private bool _death=false;
@@ -34,9 +36,18 @@ public class PlayerController : Singleton<PlayerController>
 
     [Header("玩家属性")]
     [SerializeField] private float _shootCD;
-    [SerializeField] private float _speed;
+    [SerializeField] private int _speed;
 
     [SerializeField] private int _health;
+    public int Healeth{
+        get{
+            return _health;
+        }
+        set
+        {
+            _health=value;
+        }
+    }
     private bool _aim;
 
     public Transform ShootPoint;

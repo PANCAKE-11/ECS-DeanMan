@@ -52,7 +52,6 @@ public class UIManager : Singleton<UIManager>
     public void PopOutPanels()
     {
             panels.Pop().SetActive(false);
-            print(panels.Count);
             if (panels.Count > 0)
                 panels.Peek().SetActive(true);
             else

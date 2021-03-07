@@ -29616,7 +29616,15 @@ MonoBehaviour:
   _shootPoint: {fileID: 999763046203695318}
   fireVFX: {fileID: 4977176967940934929}
   hitVFX: {fileID: 3217302758930132112, guid: 4a0e9be0f14e1ed42baf1c787cc438cd, type: 3}
+  hitZombieVFX: {fileID: 2135078742386098751, guid: f4d99f8db472366498dbc9d7d601d4b1, type: 3}
   _CDTime: 1
+  _damage: 5
+  _obstacle:
+    serializedVersion: 2
+    m_Bits: 128
+  _Zombie:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!1 &6024442773554578462
 GameObject:
   m_ObjectHideFlags: 0
