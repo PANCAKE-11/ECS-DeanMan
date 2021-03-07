@@ -1,41 +1,66 @@
 using UnityEngine;
 using System.IO;
 using System.Text;
-using System.Linq;
+
+
 public class SaveLoadManager :Singleton<SaveLoadManager>
 {
     private string _saveFilePath="Assets/Save/";
     private string _saveFileName="Save.json";
 
+    [SerializeField] GameObject enemyPrefab;
 
-    private void OnEnable() {
-        // EventHandler.AfterSceneLoadFadeInEvent+=Load;
-        // EventHandler.BeforeSceneUnloadEvent+=Save;
-    }
-    private void OnDisable() {
-        // EventHandler.AfterSceneLoadFadeInEvent-=Load;
-        // EventHandler.BeforeSceneUnloadEvent-=Save;
 
+  
+private void Update() {
+    if(Input.GetKeyDown(KeyCode.K))
+    {
+        Save();
+    }else if(Input.GetKeyDown(KeyCode.L))
+    {
+        Load();
     }
+
+}
+ 
+
+
+ private void OnEnable() {
+     EventHandler.AfterSceneLoadFadeInEvent+=Load;
+
+ }
+
+  void OnDisable() {
+     EventHandler.AfterSceneLoadFadeInEvent-=Load;
+     
+ }
     public void Save()
     {
 
-        Save saveDate=new Save();
+        EnemySave saveDate=new EnemySave();
 
       //  saveDate.player=PlayerController.Instance.transform;
 
        // saveDate.playerHealth=PlayerController.Instance.Healeth;
         GameObject[] enemys=GameObject.FindGameObjectsWithTag("Enemy");
-         saveDate.Enemy=enemys.ToList<GameObject>();
-        print(enemys.Length);
+        for(int i=0;i<enemys.Length;i++)
+        {
+            saveDate.Enemyposition.Add(enemys[i].transform.position);
+            saveDate.EnemyRotation.Add(enemys[i].transform.rotation);
+            if(enemys[i].GetComponent<Enemy>())
+           {  saveDate.EnemyDeadFlag.Add(false);
+             saveDate.EnemyHealth.Add(enemys[i].GetComponent<Enemy>().Health);}
+            else
+            { saveDate.EnemyDeadFlag.Add(true);
+             saveDate.EnemyHealth.Add(-1);}
 
+
+    
+        }
        FileStream save= File.Create(_saveFilePath+_saveFileName);
        AddText(save,JsonUtility.ToJson(saveDate));
        
-       foreach( var enemy in enemys)
-       {
-           Destroy(enemy);
-       }
+      save.Close();
     }
 
 
@@ -44,20 +69,28 @@ public class SaveLoadManager :Singleton<SaveLoadManager>
     public void Load()
     {
        FileStream save= File.OpenRead(_saveFilePath+_saveFileName);
-       Save saveData=JsonUtility.FromJson<Save>(ReadText(save));
-      
-       foreach(var enemy in saveData.Enemy)
-       {
-           GameObject.Instantiate(enemy,enemy.transform.position,enemy.transform.rotation);
-       }
+       EnemySave saveData=JsonUtility.FromJson<EnemySave>(ReadText(save));
 
-      //s Transform playerTransform= PlayerController.Instance.transform;
-        // playerTransform.position=saveData.player.position;
-        // playerTransform.rotation=saveData.player.rotation;
-        // PlayerController.Instance.Healeth=saveData.playerHealth;
+        GameObject[] enemys=GameObject.FindGameObjectsWithTag("Enemy");
+      if(ReadText(save)!="")
+     { for(int i=0;i<enemys.Length;i++)
+      {
+         enemys[i].transform.position=saveData.Enemyposition[i];
+          enemys[i].transform.rotation=saveData.EnemyRotation[i];
+          if(enemys[i].GetComponent<Enemy>())
+        {  enemys[i].GetComponent<Enemy>().Health=saveData.EnemyHealth[i];
+          enemys[i].GetComponent<Enemy>().die=saveData.EnemyDeadFlag[i];}
+      }}
+      save.Close();
 
     }
 
+
+    public void ClearSave()
+    {
+        FileStream save= File.Create(_saveFilePath+_saveFileName);
+        save.Close();
+    }
      private  void AddText(FileStream fs, string value)
     {
         byte[] info = new UTF8Encoding(true).GetBytes(value);

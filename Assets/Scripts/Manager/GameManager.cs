@@ -16,6 +16,9 @@ public class GameManager : Singleton<GameManager>
     public bool StartMenu;
     public Texture2D normalCursor;
     public Texture2D AimCursor;
+
+
+    
     private void OnEnable()
     {
         EventHandler.BeforeSceneUnloadFadeOutEvent += DestoryPlayer;

@@ -12,7 +12,7 @@ public class Weapon_Pistol1 : MonoBehaviour, IWeapon
 
     [SerializeField] private float _CDTime;
 
-     [SerializeField] private float _damage;
+     [SerializeField] private int _damage;
 
     [SerializeField] LayerMask _obstacle;
     [SerializeField] LayerMask _Zombie;

@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     IEnemyAIState _attackState;
     IEnemyAIState _patrolState;
     //属性
-
+    public bool die=false;
 
     public Enemy()
     {
@@ -25,11 +25,11 @@ public class Enemy : MonoBehaviour
 
     private IEnemyAIState _nowState = null;
     [SerializeField] private EnemyAIState_Enum beginState;
-    [SerializeField] private float _health;
-    public float Health
+    [SerializeField] private int _health;
+    public int Health
     {
         get { return _health; }
-        set { Health = value; }
+        set { _health = value; }
     }
     private NavMeshAgent _navMashAgent;
     //GamePlay参数
@@ -71,6 +71,10 @@ public class Enemy : MonoBehaviour
             Discovery();
        
             InToAttack();
+            if(die)
+            {
+                Die();
+            }
         
     }
 
@@ -144,10 +148,11 @@ public class Enemy : MonoBehaviour
     {
         _navMashAgent.enabled=false;
         _Anim.SetTrigger("Die");
+        Destroy(_navMashAgent);
         Destroy(this);
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage)
     {
         _health -= damage;
         if (_health <= 0)

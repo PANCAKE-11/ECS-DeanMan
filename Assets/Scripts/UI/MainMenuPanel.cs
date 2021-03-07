@@ -15,10 +15,11 @@ public class MainMenuPanel : MonoBehaviour
     public SceneName nextScene;
     private void OnEnable()
     {
-        startBtn.onClick.AddListener(StartAContinueBtnDown);
+        startBtn.onClick.AddListener(startNewGame);
         continueBtn.onClick.AddListener(StartAContinueBtnDown);
         settingBth.onClick.AddListener(SettingBtnDown);
         exitBtn.onClick.AddListener(ExitBtnDown);
+
     }
 
 private void Start() {
@@ -45,7 +46,13 @@ private void Start() {
         UIManager.Instance.PushInPanels(UIManager.Instance._settingsPanel);
 
     }
+    public void startNewGame()
+    {
+        SaveLoadManager.Instance.ClearSave();
+        
+        LevelManager.Instance.StartSwitchScene(nextScene.ToString(),spawnPos);
 
+    }
 
      public void Pause()
     {
@@ -58,5 +65,6 @@ private void Start() {
         settingBth.onClick.RemoveAllListeners();
         continueBtn.onClick.RemoveAllListeners();
         exitBtn.onClick.RemoveAllListeners();
+
     }
 }

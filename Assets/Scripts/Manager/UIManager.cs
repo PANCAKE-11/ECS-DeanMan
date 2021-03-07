@@ -19,12 +19,12 @@ public class UIManager : Singleton<UIManager>
     [HideInInspector] public GameObject _settingsPanel;
 
 
-
     //返回游戏
 
 
     private void Start()
     {
+        
         _pausePanel = GameObject.Instantiate(PausePanelPrafab, transform.position, Quaternion.identity);
         _pausePanel.transform.SetParent(transform);
         _settingsPanel = GameObject.Instantiate(SettingsPanelPrafab, transform.position, Quaternion.identity);
