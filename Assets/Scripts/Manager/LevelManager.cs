@@ -42,11 +42,7 @@ public class LevelManager : Singleton<LevelManager>
         // Start fading to black and wait for it to finish before continuing.
         yield return StartCoroutine(Fade(1f));
 
-        //TODO saveManager  存储场景数据
-
-        // Set player position
-      //  PlayerController.Instance.gameObject.SetActive(true);
-      //  PlayerController.Instance.gameObject.transform.position = spawnPosition;
+      
 
         //  Call before scene unload event.
         EventHandler.CallBeforeSceneUnloadEvent();
@@ -59,7 +55,6 @@ public class LevelManager : Singleton<LevelManager>
         // Call after scene load event
         EventHandler.CallAfterSceneLoadEvent();
 
-        //TODO SaveManager 恢复场景数据
 
         // Call after scene load fade in event
         EventHandler.CallAfterSceneLoadFadeInEvent();

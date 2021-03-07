@@ -158,19 +158,25 @@ public class PlayerController : Singleton<PlayerController>
 
     }
 
-
+/// <summary>
+///TODO 切换进展远程武器
+/// </summary>
     public void ChangeWeapon(IWeapon weapon)
     {
         _weapon = weapon;
     }
 
+
+/// <summary>
+/// 通过消息调用
+/// </summary>
     public void OpenFire()
     {
 
         _weapon.fire();
 
     }
-//TODO 玩家受到伤害
+
     public void TakeDamage(int Damage)
     {
         _health-=Damage;

@@ -5,7 +5,12 @@ using Cinemachine;
 
 public class SaveLoadManager :Singleton<SaveLoadManager>
 {
+    #if UNITY_EDITOR
     private string _saveFilePath="Assets/Save/";
+    #else
+    private string _saveFilePath=Application.streamingAssetsPath;
+    #endif
+
     private string _EnemySaveFileName="Save.json";
 
     [SerializeField] GameObject enemyPrefab;
@@ -19,17 +24,9 @@ public class SaveLoadManager :Singleton<SaveLoadManager>
     [SerializeField] private GameObject _camerasPrefab;
 
   
-private void Update() {
-    if(Input.GetKeyDown(KeyCode.K))
-    {
-        Save();
-    }else if(Input.GetKeyDown(KeyCode.L))
-    {
-         Load();
-    }
-}
- 
-
+/// <summary>
+/// 储存
+/// </summary>
     public void Save()
     {
 
@@ -63,7 +60,9 @@ private void Update() {
             playerProperties.HealthValue=PlayerController.Instance.Healeth;
         }
     }
-
+/// <summary>
+/// 加载
+/// </summary>
     public void Load()
     {
        FileStream save= File.OpenRead(_saveFilePath+_EnemySaveFileName);
@@ -84,6 +83,9 @@ private void Update() {
       SpawnPlayerAndCarmera();
 
     }
+
+
+
    public void SpawnPlayerAndCarmera()
     {
         if(!player&&!cameras)
@@ -101,6 +103,8 @@ private void Update() {
         }
        PlayerController.Instance.Healeth=playerProperties.HealthValue;
     }
+ 
+ 
     public void ClearSave()
     {
         FileStream save= File.Create(_saveFilePath+_EnemySaveFileName);
@@ -109,6 +113,10 @@ private void Update() {
             playerProperties.roatition = Quaternion.identity;
 
     }
+ 
+/// <summary>
+/// 储存辅助函数
+/// </summary>
      private  void AddText(FileStream fs, string value)
     {
         byte[] info = new UTF8Encoding(true).GetBytes(value);
