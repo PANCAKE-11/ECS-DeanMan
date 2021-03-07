@@ -6,7 +6,7 @@ using Cinemachine;
 public class SaveLoadManager :Singleton<SaveLoadManager>
 {
     private string _saveFilePath="Assets/Save/";
-    private string _saveFileName="Save.json";
+    private string _EnemySaveFileName="Save.json";
 
     [SerializeField] GameObject enemyPrefab;
 
@@ -51,7 +51,7 @@ private void Update() {
              saveDate.EnemyHealth.Add(-1);}
 
         }
-       FileStream save= File.Create(_saveFilePath+_saveFileName);
+       FileStream save= File.Create(_saveFilePath+_EnemySaveFileName);
        AddText(save,JsonUtility.ToJson(saveDate));
 
       save.Close();
@@ -66,7 +66,7 @@ private void Update() {
 
     public void Load()
     {
-       FileStream save= File.OpenRead(_saveFilePath+_saveFileName);
+       FileStream save= File.OpenRead(_saveFilePath+_EnemySaveFileName);
        EnemySave saveData=JsonUtility.FromJson<EnemySave>(ReadText(save));
 
         GameObject[] enemys=GameObject.FindGameObjectsWithTag("Enemy");
@@ -103,7 +103,7 @@ private void Update() {
     }
     public void ClearSave()
     {
-        FileStream save= File.Create(_saveFilePath+_saveFileName);
+        FileStream save= File.Create(_saveFilePath+_EnemySaveFileName);
         save.Close();
           playerProperties.position = Vector3.zero;
             playerProperties.roatition = Quaternion.identity;
